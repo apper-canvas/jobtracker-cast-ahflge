@@ -97,6 +97,12 @@ useEffect(() => {
     if (!formData.appliedDate) {
       newErrors.appliedDate = 'Applied date is required';
     }
+if (formData.jobUrl && formData.jobUrl.trim()) {
+      const urlPattern = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
+      if (!urlPattern.test(formData.jobUrl.trim())) {
+        newErrors.jobUrl = 'Please enter a valid URL (e.g., https://example.com)';
+      }
+    }
 
     if (formData.salary.min && formData.salary.max) {
       const min = parseFloat(formData.salary.min);
