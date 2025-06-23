@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import jobApplicationService from "@/services/api/jobApplicationService";
+import coverLetterTemplateService from "@/services/api/coverLetterTemplateService";
 import FormField from "@/components/molecules/FormField";
 import Card from "@/components/atoms/Card";
 import Button from "@/components/atoms/Button";
-
 const ApplicationForm = ({ applicationId, onSuccess, onCancel }) => {
 const [formData, setFormData] = useState({
     title: '',
@@ -40,10 +40,11 @@ const [formData, setFormData] = useState({
     { value: 'CAD', label: 'CAD' }
   ];
 
-  useEffect(() => {
+useEffect(() => {
     if (applicationId) {
       loadApplication();
     }
+    loadTemplates();
   }, [applicationId]);
 
   const loadApplication = async () => {
@@ -56,8 +57,28 @@ const [formData, setFormData] = useState({
     } finally {
       setInitialLoading(false);
     }
-  };
+};
 
+  const loadTemplates = async () => {
+    setTemplatesLoading(true);
+    try {
+      const allTemplates = await coverLetterTemplateService.getAll();
+      const formattedTemplates = [
+        { value: '', label: 'No template' },
+        ...allTemplates.map(template => ({
+          value: template.Id,
+          label: template.name
+        }))
+      ];
+      setTemplates(formattedTemplates);
+    } catch (error) {
+      console.error('Failed to load templates:', error);
+      toast.error('Failed to load cover letter templates');
+      setTemplates([{ value: '', label: 'No template' }]);
+    } finally {
+      setTemplatesLoading(false);
+    }
+  };
   const validateForm = () => {
     const newErrors = {};
 
