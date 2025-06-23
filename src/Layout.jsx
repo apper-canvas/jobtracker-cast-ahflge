@@ -135,12 +135,12 @@ const Layout = () => {
                     className="w-full justify-start text-gray-600 hover:text-red-600 hover:border-red-300"
                   >
                     Logout
-                  </Button>
+</Button>
                 </div>
               </motion.aside>
+            </>
           )}
         </AnimatePresence>
-
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto">
           <Outlet />
