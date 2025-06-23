@@ -113,16 +113,16 @@ const Documents = () => {
     setShowTemplateModal(true);
   };
 
-  const filteredDocuments = documents.filter(doc => {
-    const matchesSearch = doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         doc.description?.toLowerCase().includes(searchQuery.toLowerCase());
+const filteredDocuments = documents.filter(doc => {
+    const matchesSearch = (doc.filename || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         (doc.description || '').toLowerCase().includes(searchQuery.toLowerCase());
     const matchesType = filterType === 'all' || doc.type === filterType;
     return matchesSearch && matchesType;
   });
 
-  const filteredTemplates = templates.filter(template => {
-    const matchesSearch = template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         template.content.toLowerCase().includes(searchQuery.toLowerCase());
+const filteredTemplates = templates.filter(template => {
+    const matchesSearch = (template.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         (template.content || '').toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = filterCategory === 'all' || template.category === filterCategory;
     return matchesSearch && matchesCategory;
   });
