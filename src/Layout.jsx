@@ -1,12 +1,15 @@
-import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import ApperIcon from '@/components/ApperIcon';
-import { routeArray } from '@/config/routes';
-
+import { NavLink, Outlet, useLocation } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { AuthContext } from "@/App";
+import "@/index.css";
+import { routeArray } from "@/config/routes";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
 const Layout = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { logout } = useContext(AuthContext);
 
   // Redirect to dashboard from root
   if (location.pathname === '/') {
@@ -53,12 +56,23 @@ const Layout = () => {
                     : 'text-gray-600 hover:bg-surface hover:text-primary'
                   }
                 `}
-              >
+>
                 <ApperIcon name={route.icon} size={20} />
                 <span className="font-medium">{route.label}</span>
               </NavLink>
             ))}
           </nav>
+          
+          <div className="p-4 border-t border-gray-200">
+            <Button
+              onClick={logout}
+              variant="outline"
+              icon="LogOut"
+              className="w-full justify-start text-gray-600 hover:text-red-600 hover:border-red-300"
+            >
+              Logout
+            </Button>
+          </div>
         </aside>
 
         {/* Mobile Sidebar Overlay */}
@@ -103,14 +117,27 @@ const Layout = () => {
                           : 'text-gray-600 hover:bg-surface hover:text-primary'
                         }
                       `}
-                    >
+>
                       <ApperIcon name={route.icon} size={20} />
                       <span className="font-medium">{route.label}</span>
                     </NavLink>
                   ))}
                 </nav>
+                
+                <div className="p-4 border-t border-gray-200">
+                  <Button
+                    onClick={() => {
+                      logout();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    variant="outline"
+                    icon="LogOut"
+                    className="w-full justify-start text-gray-600 hover:text-red-600 hover:border-red-300"
+                  >
+                    Logout
+                  </Button>
+                </div>
               </motion.aside>
-            </>
           )}
         </AnimatePresence>
 
